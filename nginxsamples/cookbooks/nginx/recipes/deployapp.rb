@@ -1,6 +1,6 @@
 execute 'chmodapp' do
-  command "sudo chmod 755 /home/ubuntu/comcastsamples/deploy/deploy.sh"
+  command "sudo chmod 755 /home/ubuntu/nginxcluster/nginxsamples/deploy/deploy.sh"
 end
 execute 'deployapp' do
-  command "sudo /home/ubuntu/comcastsamples/deploy/deploy.sh"
+  command "sudo /home/ubuntu/nginxcluster/nginxsamples/deploy/deploy.sh"
 end
