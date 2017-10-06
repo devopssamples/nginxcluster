@@ -1,4 +1,4 @@
 
 execute 'deployapp' do
-  command "sudo chmod 755 /home/ubuntu/comcastsamples/deploy/deploy.sh; /home/ubuntu/comcastsamples/deploy/deploy.sh"
+  command "sudo chmod 755 /home/ubuntu/devopssamples/nginxcluster/deploy/deploy.sh; /home/ubuntu/nginxcluster/deploy/deploy.sh"
 end
