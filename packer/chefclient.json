@@ -1,0 +1,38 @@
+{
+  "variables": {
+	"vpc_id": "{{env `VPC_ID`}}",
+	"subnet_id": "{{env `SUBNET_ID`}}",
+	"region": "{{env `REGION`}}"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+	"access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `region`}}",
+    "source_ami": "ami-cd0f5cb6",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "ChefClient0928",
+	"vpc_id": "{{user `vpc_id`}}",
+	"subnet_id": "{{user `subnet_id`}}",
+	"communicator": "ssh" ,
+	"ssh_pty" : true,
+	"tags": {
+      "Name": "basebox with chef client",
+      "Base Image": "ubuntu public image ",
+      "installed": "chefdk"
+    }
+  }],
+   "provisioners": [
+	{
+		"type": "shell",
+		"inline_shebang": "/bin/bash -x",
+		"execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+		"inline": [
+		  "curl -o /home/ubuntu/chefdk.deb https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.3.4-1_amd64.deb",
+		  "sudo dpkg -i /home/ubuntu/chefdk.deb ",
+		  "sudo apt-get install -f"
+		]
+	}
+  ]
+}

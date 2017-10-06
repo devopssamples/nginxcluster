@@ -1,0 +1,53 @@
+{
+  "variables": {
+	"vpc_id": "{{env `VPC_ID`}}",
+	"subnet_id": "{{env `SUBNET_ID`}}",
+	"region": "{{env `REGION`}}"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+	"access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `region`}}",
+    "source_ami": "ami-50b04d2a",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "Nginx1001-1",
+	"vpc_id": "{{user `vpc_id`}}",
+	"subnet_id": "{{user `subnet_id`}}",
+	"communicator": "ssh" ,
+	"ssh_pty" : true,
+	"tags": {
+      "Name": "Nginx with chef client 0930",
+      "Base Image": "ubuntu public image ",
+      "installed": "chefdk, Nginx"
+    }
+  }
+	],
+   "provisioners": [
+	{
+		"type": "shell",
+		"inline_shebang": "/bin/bash -x",
+		"inline": [
+		  "mkdir ~/cookbooks"
+		]
+	},
+	{
+	  "type": "file",
+	  "source": "C:/project/work/comcast/cookbooks/nginx",
+	  "destination": "~/cookbooks/nginx"
+	},
+	{
+	  "type": "file",
+	  "source": "C:/project/work/comcast/chefconfig",
+	  "destination": "~/chefconfig"
+	},
+	{
+		"type": "shell",
+		"inline_shebang": "/bin/bash -x",
+		"inline": [
+		  "sudo chef-client --local-mode -c ~/chefconfig/client.rb -j ~/chefconfig/node-nginx.json"
+		]
+	}
+  ]
+}
